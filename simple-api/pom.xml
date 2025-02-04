@@ -18,14 +18,10 @@
 		<jacoco-maven-plugin.version>0.8.12</jacoco-maven-plugin.version>
 		<testcontainers.version>1.20.4</testcontainers.version>
 		<validation.version>3.1.0</validation.version>
-	</properties>
-
-	<properties>
 		<sonar.host.url>https://sonarcloud.io</sonar.host.url>
-		<sonar.organization>your-org-key</sonar.organization>
+		<sonar.organization>e78baaf05d455e059abac00d02136261e17baaef</sonar.organization>
 		<sonar.projectKey>Yerow_CPE_DOCKER</sonar.projectKey>
 	</properties>
-
 
 	<dependencies>
 		<dependency>
