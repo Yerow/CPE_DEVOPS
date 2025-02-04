@@ -28,33 +28,33 @@ jobs:
 
 
   build-and-push-docker-image:
-  needs: test-backend  # Ensures tests pass before running this job
-  runs-on: ubuntu-22.04
+    needs: test-backend  # Ensures tests pass before running this job
+    runs-on: ubuntu-22.04
 
-  steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-    - name: Login to DockerHub
-      run: docker login -u ${{ secrets.DOCK_USER }} -p ${{ secrets.DOCK_TOKEN }}
+      - name: Login to DockerHub
+        run: docker login -u ${{ secrets.DOCK_USER }} -p ${{ secrets.DOCK_TOKEN }}
 
-    - name: Build image and push backend
-      uses: docker/build-push-action@v6.13.0
-      with:
-        context: simple-api
-        tags: ${{ secrets.DOCK_USER }}/tp-devops-simple-api:latest
-        push: ${{ github.ref == 'refs/heads/main' }}  # Only push if on main branch
+      - name: Build image and push backend
+        uses: docker/build-push-action@v6.13.0
+        with:
+          context: simple-api
+          tags: ${{ secrets.DOCK_USER }}/tp-devops-simple-api:latest
+          push: ${{ github.ref == 'refs/heads/main' }}  # Only push if on main branch
 
-    - name: Build image and push database
-      uses: docker/build-push-action@v6.13.0
-      with:
-        context: database
-        tags: ${{ secrets.DOCK_USER }}/tp-devops-database:latest
-        push: ${{ github.ref == 'refs/heads/main' }}
+      - name: Build image and push database
+        uses: docker/build-push-action@v6.13.0
+        with:
+          context: database
+          tags: ${{ secrets.DOCK_USER }}/tp-devops-database:latest
+          push: ${{ github.ref == 'refs/heads/main' }}
 
-    - name: Build image and push httpd
-      uses: docker/build-push-action@v6.13.0
-      with:
-        context: http-server
-        tags: ${{ secrets.DOCK_USER }}/tp-devops-http-server:latest
-        push: ${{ github.ref == 'refs/heads/main' }}
+      - name: Build image and push httpd
+        uses: docker/build-push-action@v6.13.0
+        with:
+          context: http-server
+          tags: ${{ secrets.DOCK_USER }}/tp-devops-http-server:latest
+          push: ${{ github.ref == 'refs/heads/main' }}
