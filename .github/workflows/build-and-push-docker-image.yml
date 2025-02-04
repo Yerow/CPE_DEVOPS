@@ -9,7 +9,7 @@ on:
 
 jobs:
   build-and-push-docker-image:
-    if: github.event.workflow_run.conclusion == 'success'  # Exécute uniquement si les tests passent
+    if: github.event.workflow_run.conclusion == 'success'  # Exécute uniquement si les tests passent 👍
     runs-on: ubuntu-22.04
 
     steps:
