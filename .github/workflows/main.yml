@@ -35,29 +35,26 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Debug secrets
-        run: echo "Docker username is ${{ vars.DOCK_USER }}" && echo "Docker token is ${{ secrets.DOCK_TOKEN }}"
-
       - name: Login to DockerHub
-        run: docker login -u ${{ vars.DOCK_USER }} -p ${{ secrets.DOCK_TOKEN }}
+        run: docker login -u ${{ secrets.DOCKER_USER }} -p ${{ secrets.DOCKER_TOKEN }}
 
       - name: Build image and push backend
         uses: docker/build-push-action@v6.13.0
         with:
           context: simple-api
-          tags: ${{ vars.DOCK_USER }}/tp-devops-simple-api:latest
+          tags: ${{ secrets.DOCKER_USER }}/tp-devops-simple-api:latest
           push: ${{ github.ref == 'refs/heads/main' }}  # Only push if on main branch
 
       - name: Build image and push database
         uses: docker/build-push-action@v6.13.0
         with:
           context: database
-          tags: ${{ vars.DOCK_USER }}/tp-devops-database:latest
+          tags: ${{ secrets.DOCKER_USER }}/tp-devops-database:latest
           push: ${{ github.ref == 'refs/heads/main' }}
 
       - name: Build image and push httpd
         uses: docker/build-push-action@v6.13.0
         with:
           context: http-server
-          tags: ${{ vars.DOCK_USER }}/tp-devops-http-server:latest
+          tags: ${{ secrets.DOCKER_USER }}/tp-devops-http-server:latest
           push: ${{ github.ref == 'refs/heads/main' }}
