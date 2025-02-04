@@ -183,4 +183,5 @@ networks:
 
 volumes:
     pg_data:  # Persistent volume for Postgres data
+	    volumes: pg_data: # Explicitly sets the volume name
 ```
