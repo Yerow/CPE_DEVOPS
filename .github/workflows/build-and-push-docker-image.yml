@@ -3,15 +3,49 @@ name: Build and Push Docker Image
 on:
   workflow_run:
     workflows: ["Test Backend"]
-    branches: [main]
+    branches: [main, develop]
     types:
       - completed
 
 jobs:
-  build-and-push-docker-image:
-    if: github.event.workflow_run.conclusion == 'success'  # Exécute uniquement si les tests passent 👍
+  build:
+    if: github.event.workflow_run.conclusion == 'success'  # Run only if tests pass
     runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
+      - name: Build backend image
+        uses: docker/build-push-action@v6.13.0
+        with:
+          context: simple-api
+          tags: |
+            ${{ secrets.DOCKER_USER }}/tp-devops-simple-api:latest
+            ${{ secrets.DOCKER_USER }}/tp-devops-simple-api:${{ github.run_number }}
+          push: false  # No push for develop
+
+      - name: Build database image
+        uses: docker/build-push-action@v6.13.0
+        with:
+          context: database
+          tags: |
+            ${{ secrets.DOCKER_USER }}/tp-devops-database:latest
+            ${{ secrets.DOCKER_USER }}/tp-devops-database:${{ github.run_number }}
+          push: false  # No push for develop
+
+      - name: Build HTTP server image
+        uses: docker/build-push-action@v6.13.0
+        with:
+          context: http-server
+          tags: |
+            ${{ secrets.DOCKER_USER }}/tp-devops-http-server:latest
+            ${{ secrets.DOCKER_USER }}/tp-devops-http-server:${{ github.run_number }}
+          push: false  # No push for develop
+
+  push:
+    if: github.event.workflow_run.conclusion == 'success' && github.base_ref == 'main'  # Only push if merging to main
+    runs-on: ubuntu-22.04
+    needs: build
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -19,23 +53,29 @@ jobs:
       - name: Login to DockerHub
         run: echo "${{ secrets.DOCKER_TOKEN }}" | docker login -u "${{ secrets.DOCKER_USER }}" --password-stdin
 
-      - name: Build and push backend image
+      - name: Push backend image
         uses: docker/build-push-action@v6.13.0
         with:
           context: simple-api
-          tags: ${{ secrets.DOCKER_USER }}/tp-devops-simple-api:latest
+          tags: |
+            ${{ secrets.DOCKER_USER }}/tp-devops-simple-api:latest
+            ${{ secrets.DOCKER_USER }}/tp-devops-simple-api:${{ github.run_number }}
           push: true
 
-      - name: Build and push database image
+      - name: Push database image
         uses: docker/build-push-action@v6.13.0
         with:
           context: database
-          tags: ${{ secrets.DOCKER_USER }}/tp-devops-database:latest
+          tags: |
+            ${{ secrets.DOCKER_USER }}/tp-devops-database:latest
+            ${{ secrets.DOCKER_USER }}/tp-devops-database:${{ github.run_number }}
           push: true
 
-      - name: Build and push HTTP server image
+      - name: Push HTTP server image
         uses: docker/build-push-action@v6.13.0
         with:
           context: http-server
-          tags: ${{ secrets.DOCKER_USER }}/tp-devops-http-server:latest
+          tags: |
+            ${{ secrets.DOCKER_USER }}/tp-devops-http-server:latest
+            ${{ secrets.DOCKER_USER }}/tp-devops-http-server:${{ github.run_number }}
           push: true
