@@ -35,6 +35,9 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Debug secrets
+        run: echo "Docker username is ${{ vars.DOCK_USER }}" && echo "Docker token is ${{ secrets.DOCK_TOKEN }}"
+
       - name: Login to DockerHub
         run: docker login -u ${{ vars.DOCK_USER }} -p ${{ secrets.DOCK_TOKEN }}
 
