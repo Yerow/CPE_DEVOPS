@@ -1,0 +1,9 @@
+- name: Run Reverse Proxy
+  community.docker.docker_container:
+    name: reverse_proxy
+    image: mohaguef/tp-devops-http-server
+    ports:
+      - "80:80"
+    networks:
+      - name: my-network
+    restart_policy: unless-stopped

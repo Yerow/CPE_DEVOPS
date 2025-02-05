@@ -1,0 +1,13 @@
+- name: Run PostgreSQL database
+  community.docker.docker_container:
+    name: db_postgres
+    image: postgres:14.1-alpine
+    env:
+      POSTGRES_DB: db
+      POSTGRES_USER: usr
+      POSTGRES_PASSWORD: pwd
+    volumes:
+      - db-volume:/var/lib/postgresql/data
+    networks:
+      - name: my-network
+    restart_policy: unless-stopped
