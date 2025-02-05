@@ -1,6 +1,6 @@
 - name: Run PostgreSQL database
   community.docker.docker_container:
-    name: db_postgres
+    name: database
     image: postgres:14.1-alpine
     env:
       POSTGRES_DB: db

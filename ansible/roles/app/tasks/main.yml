@@ -1,13 +1,13 @@
 - name: Run Simple API
   community.docker.docker_container:
-    name: backend_api
+    name: simple-api
     image: mohaguef/tp-devops-simple-api
     env:
-      DATABASE_HOST: db_postgres
+      DATABASE_HOST: database
       DATABASE_NAME: db
       DATABASE_USER: usr
       DATABASE_PASSWORD: pwd
-      DATABASE_URL: jdbc:postgresql://db_postgres:5432/db
+      DATABASE_URL: jdbc:postgresql://database:5432/db
     networks:
       - name: my-network
     restart_policy: unless-stopped
