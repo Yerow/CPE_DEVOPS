@@ -1,4 +1,9 @@
 - name: Create Docker network
   community.docker.docker_network:
-    name: my-network
+    name: proxy-network
+    driver: bridge
+
+- name: Create Docker network
+  community.docker.docker_network:
+    name: db-network
     driver: bridge

@@ -5,6 +5,7 @@
   roles:
     - docker
     - network
+    - env-setup
     - database
     - app
     - proxy

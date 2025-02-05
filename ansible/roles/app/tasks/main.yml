@@ -1,15 +1,10 @@
 - name: Run Simple API
   community.docker.docker_container:
     name: simple-api
-    image: mohaguef/tp-devops-simple-api
-    env:
-      DATABASE_HOST: database
-      DATABASE_NAME: db
-      DATABASE_USER: usr
-      DATABASE_PASSWORD: pwd
-      DATABASE_URL: jdbc:postgresql://database:5432/db
+    image: mohaguef/tp-devops-simple-api:latest
+    pull: yes
+    env_file: /home/admin/.env  # Use the copied .env file
     networks:
-      - name: my-network
+      - name: proxy-network
+      - name: db-network
     restart_policy: unless-stopped
-    ports:
-      - "8080:8080"

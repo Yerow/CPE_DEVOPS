@@ -1,13 +1,11 @@
 - name: Run PostgreSQL database
   community.docker.docker_container:
     name: database
-    image: postgres:14.1-alpine
-    env:
-      POSTGRES_DB: db
-      POSTGRES_USER: usr
-      POSTGRES_PASSWORD: pwd
+    image: mohaguef/tp-devops-database:latest
+    pull: yes
+    env_file: /home/admin/.env  # Use the copied .env file
     volumes:
       - db-volume:/var/lib/postgresql/data
     networks:
-      - name: my-network
+      - name: db-network
     restart_policy: unless-stopped
