@@ -8,4 +8,5 @@
     - env-setup
     - database
     - app
+    - front
     - proxy
