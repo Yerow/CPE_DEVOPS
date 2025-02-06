@@ -5,6 +5,7 @@
     pull: yes
     ports:
       - "80:80"
+      - "8080:8080"
     networks:
       - name: proxy-network
     restart_policy: unless-stopped
