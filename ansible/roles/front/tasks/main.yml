@@ -1,0 +1,21 @@
+- name: Deploy Frontend Application
+  hosts: all
+  gather_facts: true
+  become: true
+
+  tasks:
+    - name: Pull Frontend Docker Image
+      community.docker.docker_image:
+        name: mohaguef/tp-devops-front:latest  # Replace with your actual image name
+        source: pull
+
+    - name: Run Frontend Container
+      community.docker.docker_container:
+        name: frontend
+        image: mohaguef/tp-devops-frontend:latest  # Replace with your actual image name
+        pull: yes
+        ports:
+          - "3000:80"  # Adjust the port mapping if needed
+        networks:
+          - name: my-network
+        restart_policy: unless-stopped

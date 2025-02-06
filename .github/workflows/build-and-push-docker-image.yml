@@ -39,3 +39,10 @@ jobs:
           context: http-server
           tags: ${{ secrets.DOCKER_USER }}/tp-devops-http-server:latest
           push: true
+
+      - name: Build and push frontend image
+        uses: docker/build-push-action@v6.13.0
+        with:
+          context: front-main
+          tags: ${{ secrets.DOCKER_USER }}/tp-devops-frontend:latest
+          push: true
